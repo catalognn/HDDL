@@ -1,0 +1,8 @@
+Définition du VAE et CVAE : https://ijdykeman.github.io/ml/2016/12/21/cvae.html
+
+CVAE va être plus performant que le VAE car on donne à l'encodeur en entrée un label pour lui donner l'information de ce qu'il a a produire. 
+Ainsi, en ayant cette information, il peut se concentrer sur d'autres informations des données en entrée (la largeur de l'image, la densité de la coloration, etc).
+Les labels sont reliés à des images qui servent de modèles sur lesquels le décodeur peut se baser lors sa prédiction. 
+Par exemple pour un VAE, on met en entrée de l'encodeur l'image d'un 1. Le décodeur doit donc reconnaitre le chiffre et tenter de le reproduire.
+Pour un CVAE, on met en entrée de l'encodeur l'image d'un 1 également. Seulement, on indique à l'entrée du décodeur que l'image qu'on a mis est un 1. 
+Le décodeur du CVAE sait d'avance que c'est un 1 donc il peut se concentrer sur d'autres aspects de l'image d'entrée.
