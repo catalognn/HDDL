@@ -1,8 +1,25 @@
 Définition du VAE et CVAE : https://ijdykeman.github.io/ml/2016/12/21/cvae.html
 
-CVAE va être plus performant que le VAE car on donne à l'encodeur en entrée un label pour lui donner l'information de ce qu'il a a produire. 
+La différence entre le CVAE et le VAE est que l'on donne en entrée de l'encodeur et du décodeur du CVAE, un label pour lui donner l'information de ce qu'il a a produire. 
 Ainsi, en ayant cette information, il peut se concentrer sur d'autres informations des données en entrée (la largeur de l'image, la densité de la coloration, etc).
-Les labels sont reliés à des images qui servent de modèles sur lesquels le décodeur peut se baser lors sa prédiction. 
+Les images servent de modèles sur lesquels le décodeur peut se baser lors sa prédiction et les labels permettent de guider la prédiction vers un certain type d'image. 
 Par exemple pour un VAE, on met en entrée de l'encodeur l'image d'un 1. Le décodeur doit donc reconnaitre le chiffre et tenter de le reproduire.
-Pour un CVAE, on met en entrée de l'encodeur l'image d'un 1 également. Seulement, on indique à l'entrée du décodeur que l'image qu'on a mis est un 1. 
-Le décodeur du CVAE sait d'avance que c'est un 1 donc il peut se concentrer sur d'autres aspects de l'image d'entrée.
+Pour un CVAE, en plus de l'image d'un 1 donnée à l'encodeur, on fournit aussi le label 1 comme information conditionnelle au décodeur. Cela permet au décodeur 
+de savoir d'avance qu'il doit reconstruire l'image d'un 1, ce qui lui laisse plus de capacité pour se concentrer sur d'autres caractéristiques de l'image.
+
+Fonction de perte : 
+Elle est composée de deux termes : la cross entropy binaire et la divergence de Kullback-Leibler.
+La première partie de la fonction de perte correspond à l'erreur de reconstruction, il permet donc d'évaluer notre modèle. Pour obtenir le meilleur modèle, il faut
+minimiser la cross entropy entre la distribution de probabilité prédite et la réelle.
+La divergence de Kullback-Leibler est un facteur de régularisation. Il permet de mesurer la divergence entre deux distributions de probabilité et indique la proportion d'information perdu en utilisant
+une distribution pour représenter l'autre. Ce facteur permet de gérer la qualité de représentation des données dans l'espace latent qui a un impact direct sur la 
+qualité de génération de nouveaux échantillons de données. Il implique aussi à l'espace latent d'être distribué normalement autour de 0.
+Le facteur β est un coefficient de pondération pour ajuster l'importance de la régularisation (terme KLD) par rapport à la reconstruction (terme cross-entropy).
+Plus β est grand plus l'espace latent est proche d'une gaussienne centrée réduite (points tous mélangés dans l'espace latent). 
+Dans les hyper-paramètres du modèle, on décide d'optimiser uniquement le poids de régularisation (facteur β) et la dimension latente. Les hyper-paramètres de la taille du batch et du learning rate n'ont pas une grande 
+influence donc on les prend arbitrairement à eps = 10-3 et taille du batch=128. 
+
+
+Si on met espace latent sup à 2 on observe la répresentation dans l'ACP
+renormaliser les données mais d'une autre maniere 
+comparer l'erreur de reconstruction et de loss => trouver un compromis
