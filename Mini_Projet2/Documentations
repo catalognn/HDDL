@@ -1,4 +1,5 @@
 Définition du VAE et CVAE : https://ijdykeman.github.io/ml/2016/12/21/cvae.html
+choix des couches du modèle : https://inside-machinelearning.com/cnn-couche-de-convolution/
 
 La différence entre le CVAE et le VAE est que l'on donne en entrée de l'encodeur et du décodeur du CVAE, un label pour lui donner l'information de ce qu'il a a produire. 
 Ainsi, en ayant cette information, il peut se concentrer sur d'autres informations des données en entrée (la largeur de l'image, la densité de la coloration, etc).
@@ -6,6 +7,12 @@ Les images servent de modèles sur lesquels le décodeur peut se baser lors sa p
 Par exemple pour un VAE, on met en entrée de l'encodeur l'image d'un 1. Le décodeur doit donc reconnaitre le chiffre et tenter de le reproduire.
 Pour un CVAE, en plus de l'image d'un 1 donnée à l'encodeur, on fournit aussi le label 1 comme information conditionnelle au décodeur. Cela permet au décodeur 
 de savoir d'avance qu'il doit reconstruire l'image d'un 1, ce qui lui laisse plus de capacité pour se concentrer sur d'autres caractéristiques de l'image.
+
+Pour le choix de l'architecture du modèle, nous avons choisi d'utiliser des couches convolutionnelles. En effet, celles-ci sont les plus adéquates pour l'analyse 
+d'image, elles ont une approche locale et analysent les images zone par zone pour avoir des résultats précis. 
+Les couches de convolution analyse graduellement l'image. La première couche analyse les petits motifs de l'image et les suivantes analysent les motifs de 
+plus en plus gros.
+
 
 Fonction de perte : 
 Elle est composée de deux termes : la cross entropy binaire et la divergence de Kullback-Leibler.
@@ -16,8 +23,18 @@ une distribution pour représenter l'autre. Ce facteur permet de gérer la quali
 qualité de génération de nouveaux échantillons de données. Il implique aussi à l'espace latent d'être distribué normalement autour de 0.
 Le facteur β est un coefficient de pondération pour ajuster l'importance de la régularisation (terme KLD) par rapport à la reconstruction (terme cross-entropy).
 Plus β est grand plus l'espace latent est proche d'une gaussienne centrée réduite (points tous mélangés dans l'espace latent). 
-Dans les hyper-paramètres du modèle, on décide d'optimiser uniquement le poids de régularisation (facteur β) et la dimension latente. Les hyper-paramètres de la taille du batch et du learning rate n'ont pas une grande 
-influence donc on les prend arbitrairement à eps = 10-3 et taille du batch=128. 
+
+Dans les hyper-paramètres du modèle, on décide d'optimiser uniquement le poids de régularisation (facteur β) et la dimension latente. Les hyper-paramètres de la 
+taille du batch et du learning rate n'ont pas une grande influence donc on les prend arbitrairement à eps = 10-3 et taille du batch=128. 
+L'optimisation du facteur β permet de trouver un compromis optimal de résultat, garantissant à la fois une reconstruction fidèle des données et une structure latente bien organisée.
+La dimension latente détermine la capacité du modèle à capturer les informations pertinentes des données dans un espace de plus faible dimension.
+La taille du batch influence en grande partie sur la stabilité de l'optimisation et la rapidité des calculs mais son impact n'a pas une grande influence
+sur les performences du modèle final. 
+Le taux d'apprentissage détermine la vitesse à laquelle le modèle converge vers un minimum local. Il est donc important de bien le choisir, un ordre de grandeur entre
+10-3 et 10-4 est généralement efficace. Optimiser ce paramètres n'est donc pas nécessaire dans un premier temps.
+
+Le nombre d'époques détermine combien de fois le modèle parcourt l'ensemble des données d'entraînement. Ce paramètre permet d'assurer une bonne convergence du modèle 
+sans provoquer de surapprentissage. Il faut quen
 
 
 Si on met espace latent sup à 2 on observe la répresentation dans l'ACP
