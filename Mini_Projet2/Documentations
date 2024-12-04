@@ -2,11 +2,11 @@ Définition du VAE et CVAE : https://ijdykeman.github.io/ml/2016/12/21/cvae.html
 choix des couches du modèle : https://inside-machinelearning.com/cnn-couche-de-convolution/
 
 La différence entre le CVAE et le VAE est que l'on donne en entrée de l'encodeur et du décodeur du CVAE, un label pour lui donner l'information de ce qu'il a a produire. 
-Ainsi, en ayant cette information, il peut se concentrer sur d'autres informations des données en entrée (la largeur de l'image, la densité de la coloration, etc).
-Les images servent de modèles sur lesquels le décodeur peut se baser lors sa prédiction et les labels permettent de guider la prédiction vers un certain type d'image. 
-Par exemple pour un VAE, on met en entrée de l'encodeur l'image d'un 1. Le décodeur doit donc reconnaitre le chiffre et tenter de le reproduire.
-Pour un CVAE, en plus de l'image d'un 1 donnée à l'encodeur, on fournit aussi le label 1 comme information conditionnelle au décodeur. Cela permet au décodeur 
-de savoir d'avance qu'il doit reconstruire l'image d'un 1, ce qui lui laisse plus de capacité pour se concentrer sur d'autres caractéristiques de l'image.
+Ainsi, en ayant cette information, il peut se concentrer sur d'autres informations/aspects des données en entrée (la largeur de l'image, la densité de la coloration, etc).
+Les images servent de modèles sur lesquels le décodeur peut se baser lors sa prédiction et les labels permettent ainsi de guider la prédiction vers un certain type d'image. 
+Par exemple pour un VAE, on met en entrée de l'encodeur une image. Le décodeur doit donc reconnaitre cette image et tenter de la reproduire.
+Pour un CVAE, en plus de l'image donnée à l'encodeur, on fournit aussi le label de cette image (la catégorie à laquelle elle appartient) comme information conditionnelle au décodeur. Cela permet au décodeur 
+de savoir d'avance qu'il doit reconstruire une image du label précisé, ce qui lui laisse plus de capacité pour se concentrer sur d'autres caractéristiques de l'image.
 
 Pour le choix de l'architecture du modèle, nous avons choisi d'utiliser des couches convolutionnelles. En effet, celles-ci sont les plus adéquates pour l'analyse 
 d'image, elles ont une approche locale et analysent les images zone par zone pour avoir des résultats précis. 
